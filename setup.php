@@ -27,8 +27,6 @@
  * -------------------------------------------------------------------------
  */
 
-use Glpi\Plugin\Hooks;
-
 define('PLUGIN_ETIQUETACHAMADOS_VERSION', '1.0.0');
 
 // Minimal GLPI version, inclusive
@@ -47,17 +45,17 @@ function plugin_init_etiquetachamados()
     global $PLUGIN_HOOKS;
 
     // CSRF compliance (required since GLPI 0.84)
-    $PLUGIN_HOOKS[Hooks::CSRF_COMPLIANT]['etiquetachamados'] = true;
+    $PLUGIN_HOOKS['csrf_compliant']['etiquetachamados'] = true;
 
     // Register Config class — adds tab on Entity form
     Plugin::registerClass(
-        PluginEtiquetachamadosConfig::class,
+        'PluginEtiquetachamadosConfig',
         ['addtabon' => ['Entity']]
     );
 
     // Register Profile class — adds tab on Profile form
     Plugin::registerClass(
-        PluginEtiquetachamadosProfile::class,
+        'PluginEtiquetachamadosProfile',
         ['addtabon' => ['Profile']]
     );
 
@@ -74,13 +72,13 @@ function plugin_init_etiquetachamados()
     $PLUGIN_HOOKS['change_profile']['etiquetachamados'] = 'plugin_change_profile_etiquetachamados';
 
     // Inject print button on Ticket form (POST_ITEM_FORM hook)
-    $PLUGIN_HOOKS[Hooks::POST_ITEM_FORM]['etiquetachamados'] = [
-        PluginEtiquetachamadosTicket::class, 'postItemForm',
+    $PLUGIN_HOOKS['post_item_form']['etiquetachamados'] = [
+        'PluginEtiquetachamadosTicket', 'postItemForm',
     ];
 
     // Add CSS and JS assets
-    $PLUGIN_HOOKS[Hooks::ADD_CSS]['etiquetachamados']        = 'css/etiquetachamados.css';
-    $PLUGIN_HOOKS[Hooks::ADD_JAVASCRIPT]['etiquetachamados'] = 'js/etiquetachamados.js';
+    $PLUGIN_HOOKS['add_css']['etiquetachamados']        = 'css/etiquetachamados.css';
+    $PLUGIN_HOOKS['add_javascript']['etiquetachamados'] = 'js/etiquetachamados.js';
 }
 
 

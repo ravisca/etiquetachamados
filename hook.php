@@ -126,17 +126,19 @@ function plugin_etiquetachamados_install()
     ]);
 
     // Grant full access to super-admin profiles (those that can update Config)
+    // Use ALLSTANDARDRIGHT (CREATE|READ|UPDATE|DELETE|PURGE) — available in all GLPI 10.0.x
     $migration->addRight(
         'plugin_etiquetachamados_config',
-        ALL_RES,
+        ALLSTANDARDRIGHT,
         [Config::$rightname => UPDATE]
     );
 
     // ---------------------------------------------------------------
     // CronTask: register the async print job processor
     // ---------------------------------------------------------------
+    // Use string class name to avoid autoloading issues during install
     CronTask::register(
-        PluginEtiquetachamadosPrintjob::class,
+        'PluginEtiquetachamadosPrintjob',
         'EtiquetaPrint',
         60, // Run every 60 seconds
         [
