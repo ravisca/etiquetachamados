@@ -1,0 +1,43 @@
+/**
+ * Etiqueta Chamados - Styles
+ *
+ * @copyright Copyright (C) 2026 by RBX Soluções & Tech.
+ * @license   GPLv2
+ */
+
+/* Print button styling */
+.etiquetachamados-print-btn {
+    transition: all 0.3s ease;
+    min-width: 180px;
+}
+
+.etiquetachamados-print-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.etiquetachamados-print-btn:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+/* Loading state */
+.etiquetachamados-loading {
+    opacity: 0.8;
+    cursor: wait !important;
+}
+
+/* Status message animation */
+#etiquetachamados-print-status span {
+    animation: etiquetachamados-fadeIn 0.3s ease-in;
+}
+
+@keyframes etiquetachamados-fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

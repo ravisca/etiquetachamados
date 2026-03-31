@@ -1,0 +1,100 @@
+# Portuguese (Brazil) translations for Etiqueta Chamados plugin.
+# Copyright (C) 2026 RBX Soluções & Tech
+# This file is distributed under the same license as the Etiqueta Chamados plugin.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Etiqueta Chamados 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-25 09:00-0300\n"
+"PO-Revision-Date: 2026-03-25 09:00-0300\n"
+"Last-Translator: RBX Soluções & Tech\n"
+"Language-Team: Portuguese (Brazil)\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+msgid "Etiqueta Chamados"
+msgstr "Etiqueta Chamados"
+
+msgid "Configuração de Impressão de Etiquetas"
+msgstr "Configuração de Impressão de Etiquetas"
+
+msgid "IP da Impressora"
+msgstr "IP da Impressora"
+
+msgid "Porta TCP"
+msgstr "Porta TCP"
+
+msgid "Recursivo (herdar para sub-entidades)"
+msgstr "Recursivo (herdar para sub-entidades)"
+
+msgid "Ativo"
+msgstr "Ativo"
+
+msgid "Template ZPL"
+msgstr "Template ZPL"
+
+msgid "Variáveis disponíveis: {{ticket_id}}, {{ticket_title}}, {{ticket_date}}, {{entity_name}}, {{requester_name}}, {{ticket_content}}"
+msgstr "Variáveis disponíveis: {{ticket_id}}, {{ticket_title}}, {{ticket_date}}, {{entity_name}}, {{requester_name}}, {{ticket_content}}"
+
+msgid "Configuração herdada da entidade pai. Preencha para sobrescrever."
+msgstr "Configuração herdada da entidade pai. Preencha para sobrescrever."
+
+msgid "Imprimir Etiqueta"
+msgstr "Imprimir Etiqueta"
+
+msgid "Impressão de etiquetas"
+msgstr "Impressão de etiquetas"
+
+msgid "Imprimir etiquetas"
+msgstr "Imprimir etiquetas"
+
+msgid "Chamado não encontrado."
+msgstr "Chamado não encontrado."
+
+msgid "Você não tem permissão para imprimir etiquetas."
+msgstr "Você não tem permissão para imprimir etiquetas."
+
+msgid "Nenhuma configuração de impressora encontrada para esta entidade."
+msgstr "Nenhuma configuração de impressora encontrada para esta entidade."
+
+msgid "A impressão de etiquetas está desativada para esta entidade."
+msgstr "A impressão de etiquetas está desativada para esta entidade."
+
+msgid "O template ZPL está vazio ou inválido."
+msgstr "O template ZPL está vazio ou inválido."
+
+msgid "Erro ao enfileirar o job de impressão."
+msgstr "Erro ao enfileirar o job de impressão."
+
+msgid "Etiqueta enviada para a fila de impressão."
+msgstr "Etiqueta enviada para a fila de impressão."
+
+msgid "Processa a fila de impressão de etiquetas (envio direto à impressora Zebra)"
+msgstr "Processa a fila de impressão de etiquetas (envio direto à impressora Zebra)"
+
+msgid "IP ou hostname da impressora inválido."
+msgstr "IP ou hostname da impressora inválido."
+
+msgid "A porta deve estar entre 1 e 65535."
+msgstr "A porta deve estar entre 1 e 65535."
+
+msgid "Etiqueta Chamados - Configuração"
+msgstr "Etiqueta Chamados - Configuração"
+
+msgid "A configuração deste plugin é feita diretamente nas entidades."
+msgstr "A configuração deste plugin é feita diretamente nas entidades."
+
+msgid "Acesse: Administração > Entidades > [Entidade] > Aba \"Etiqueta Chamados\""
+msgstr "Acesse: Administração > Entidades > [Entidade] > Aba \"Etiqueta Chamados\""
+
+msgid "Ir para Entidades"
+msgstr "Ir para Entidades"
+
+msgid "Job de Impressão"
+msgid_plural "Jobs de Impressão"
+msgstr[0] "Job de Impressão"
+msgstr[1] "Jobs de Impressão"

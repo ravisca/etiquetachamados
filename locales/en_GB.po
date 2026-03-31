@@ -1,0 +1,99 @@
+# English (GB) translations for Etiqueta Chamados plugin.
+# Copyright (C) 2026 RBX Soluções & Tech
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Etiqueta Chamados 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-25 09:00-0300\n"
+"PO-Revision-Date: 2026-03-25 09:00-0300\n"
+"Last-Translator: RBX Soluções & Tech\n"
+"Language-Team: English (GB)\n"
+"Language: en_GB\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Etiqueta Chamados"
+msgstr "Ticket Labels"
+
+msgid "Configuração de Impressão de Etiquetas"
+msgstr "Label Printing Configuration"
+
+msgid "IP da Impressora"
+msgstr "Printer IP"
+
+msgid "Porta TCP"
+msgstr "TCP Port"
+
+msgid "Recursivo (herdar para sub-entidades)"
+msgstr "Recursive (inherit to sub-entities)"
+
+msgid "Ativo"
+msgstr "Active"
+
+msgid "Template ZPL"
+msgstr "ZPL Template"
+
+msgid "Variáveis disponíveis: {{ticket_id}}, {{ticket_title}}, {{ticket_date}}, {{entity_name}}, {{requester_name}}, {{ticket_content}}"
+msgstr "Available variables: {{ticket_id}}, {{ticket_title}}, {{ticket_date}}, {{entity_name}}, {{requester_name}}, {{ticket_content}}"
+
+msgid "Configuração herdada da entidade pai. Preencha para sobrescrever."
+msgstr "Configuration inherited from parent entity. Fill in to override."
+
+msgid "Imprimir Etiqueta"
+msgstr "Print Label"
+
+msgid "Impressão de etiquetas"
+msgstr "Label printing"
+
+msgid "Imprimir etiquetas"
+msgstr "Print labels"
+
+msgid "Chamado não encontrado."
+msgstr "Ticket not found."
+
+msgid "Você não tem permissão para imprimir etiquetas."
+msgstr "You do not have permission to print labels."
+
+msgid "Nenhuma configuração de impressora encontrada para esta entidade."
+msgstr "No printer configuration found for this entity."
+
+msgid "A impressão de etiquetas está desativada para esta entidade."
+msgstr "Label printing is disabled for this entity."
+
+msgid "O template ZPL está vazio ou inválido."
+msgstr "The ZPL template is empty or invalid."
+
+msgid "Erro ao enfileirar o job de impressão."
+msgstr "Error queuing the print job."
+
+msgid "Etiqueta enviada para a fila de impressão."
+msgstr "Label sent to print queue."
+
+msgid "Processa a fila de impressão de etiquetas (envio direto à impressora Zebra)"
+msgstr "Processes the label print queue (direct send to Zebra printer)"
+
+msgid "IP ou hostname da impressora inválido."
+msgstr "Invalid printer IP or hostname."
+
+msgid "A porta deve estar entre 1 e 65535."
+msgstr "Port must be between 1 and 65535."
+
+msgid "Etiqueta Chamados - Configuração"
+msgstr "Ticket Labels - Configuration"
+
+msgid "A configuração deste plugin é feita diretamente nas entidades."
+msgstr "This plugin is configured directly on entities."
+
+msgid "Acesse: Administração > Entidades > [Entidade] > Aba \"Etiqueta Chamados\""
+msgstr "Go to: Administration > Entities > [Entity] > Tab \"Ticket Labels\""
+
+msgid "Ir para Entidades"
+msgstr "Go to Entities"
+
+msgid "Job de Impressão"
+msgid_plural "Jobs de Impressão"
+msgstr[0] "Print Job"
+msgstr[1] "Print Jobs"
