@@ -12,7 +12,6 @@
   <img src="https://img.shields.io/badge/GLPI-10.0.x-blue?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSJ3aGl0ZSIgZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNy41MiAyIDEyIDJ6Ii8+PC9zdmc+" alt="GLPI 10.0.x">
   <img src="https://img.shields.io/badge/PHP-≥7.4-purple?style=for-the-badge&logo=php&logoColor=white" alt="PHP ≥7.4">
   <img src="https://img.shields.io/badge/Zebra-ZD230-green?style=for-the-badge" alt="Zebra ZD230">
-  <img src="https://img.shields.io/badge/Licença-GPLv2-orange?style=for-the-badge" alt="GPLv2">
   <img src="https://img.shields.io/badge/Protocolo-RAW_TCP_9100-red?style=for-the-badge" alt="RAW TCP">
 </p>
 
@@ -76,46 +75,46 @@ O plugin foi projetado para ambientes de **service desk** e **suporte técnico**
 ┌─────────────────────────────────────────────────────────────────┐
 │                        GLPI Interface                           │
 │                                                                 │
-│  ┌──────────┐    AJAX POST     ┌──────────────┐                │
-│  │  Botão   │ ───────────────▶ │  print.php   │                │
-│  │ Imprimir │                  │  (endpoint)  │                │
-│  └──────────┘                  └──────┬───────┘                │
+│  ┌──────────┐    AJAX POST     ┌──────────────┐                 │
+│  │  Botão   │ ───────────────▶ │  print.php   │                 │
+│  │ Imprimir │                  │  (endpoint)  │                 │
+│  └──────────┘                  └──────┬───────┘                 │
 │       ▲                               │                         │
 │       │ feedback                      ▼                         │
-│       │                        ┌──────────────┐                │
-│       └────────────────────── │ createFrom   │                 │
-│                                │ Ticket()     │                │
-│                                └──────┬───────┘                │
+│       │                        ┌──────────────┐                 │
+│       └──────────────────────  │ createFrom   │                 │
+│                                │ Ticket()     │                 │
+│                                └──────┬───────┘                 │
 │                                       │                         │
-│                          ┌────────────┼────────────┐           │
-│                          ▼            ▼            ▼           │
-│                   ┌───────────┐ ┌──────────┐ ┌──────────┐     │
-│                   │ Resolve   │ │ Render   │ │ Insert   │     │
-│                   │ Config    │ │ ZPL      │ │ PrintJob │     │
-│                   │(recursion)│ │(template)│ │ (DB)     │     │
-│                   └───────────┘ └──────────┘ └────┬─────┘     │
+│                          ┌────────────┼────────────┐            │
+│                          ▼            ▼            ▼            │
+│                   ┌───────────┐ ┌──────────┐ ┌──────────┐       │
+│                   │ Resolve   │ │ Render   │ │ Insert   │       │
+│                   │ Config    │ │ ZPL      │ │ PrintJob │       │
+│                   │(recursion)│ │(template)│ │ (DB)     │       │
+│                   └───────────┘ └──────────┘ └────┬─────┘       │
 │                                                    │            │
 │                              ┌─────────────────────┤            │
 │                              ▼                     ▼            │
-│                     ┌─────────────┐      ┌──────────────┐      │
-│                     │   Tentativa │      │   CronTask   │      │
-│                     │   Imediata  │      │  (retentativa│      │
-│                     │  (fire&try) │      │   a/ 1 min)  │      │
-│                     └──────┬──────┘      └──────┬───────┘      │
+│                     ┌─────────────┐      ┌──────────────┐       │
+│                     │   Tentativa │      │   CronTask   │       │
+│                     │   Imediata  │      │  (retentativa│       │
+│                     │  (fire&try) │      │   a/ 1 min)  │       │
+│                     └──────┬──────┘      └──────┬───────┘       │
 │                            │                     │              │
 │                            └──────────┬──────────┘              │
 │                                       ▼                         │
-│                              ┌─────────────────┐               │
-│                              │   sendToPrinter  │               │
-│                              │   (TCP Socket)   │               │
-│                              └────────┬────────┘               │
+│                              ┌─────────────────┐                │
+│                              │   sendToPrinter │                │
+│                              │   (TCP Socket)  │                │
+│                              └────────┬────────┘                │
 └───────────────────────────────────────┼─────────────────────────┘
                                         │
                                         │ RAW TCP :9100
                                         ▼
                                ┌─────────────────┐
-                               │  🖨️ Zebra ZD230  │
-                               │   (ou compat.)   │
+                               │  🖨️ Zebra ZD230 │
+                               │   (ou compat.)  │
                                └─────────────────┘
 ```
 
@@ -321,12 +320,9 @@ etiquetachamados/
 ├── 📁 css/
 │   └── 📄 etiquetachamados.css     # Estilos do botão e animações
 │
-├── 📁 locales/                     # Internacionalização
-│   ├── 📄 pt_BR.po                 # Português do Brasil
-│   └── 📄 en_GB.po                 # Inglês
-│
-└── 📁 docs/
-    └── 🖼️ banner.png               # Banner do repositório
+└── 📁 locales/                     # Internacionalização
+    ├── 📄 pt_BR.po                 # Português do Brasil
+    └── 📄 en_GB.po                 # Inglês
 ```
 
 ---
@@ -390,11 +386,11 @@ Os logs do plugin ficam em:
 Exemplo de log:
 
 ```log
-2026-03-31 17:01:29 [@srvglpinew]
+2026-03-31 17:01:29 [@servidor]
 Job #1 criado para ticket #24 (entidade #0)
 
-2026-03-31 17:01:29 [@srvglpinew]
-Job #1: Impressão imediata enviada com sucesso para 10.0.250.9:9100
+2026-03-31 17:01:29 [@servidor]
+Job #1: Impressão imediata enviada com sucesso para 192.168.1.100:9100
 ```
 
 ---
@@ -411,7 +407,7 @@ Job #1: Impressão imediata enviada com sucesso para 10.0.250.9:9100
 
 ## 📜 Licença
 
-Este projeto é distribuído sob a licença **GPLv2**. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+Este projeto é distribuído sob a licença **GPLv2**. 
 
 ---
 
