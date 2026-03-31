@@ -49,108 +49,160 @@ function plugin_etiquetachamados_install()
 {
     global $DB;
 
-    $migration = new Migration(PLUGIN_ETIQUETACHAMADOS_VERSION);
+    // Log every step so we can diagnose installation failures
+    Toolbox::logInFile('etiquetachamados', "=== INÍCIO DA INSTALAÇÃO ===\n");
 
-    $default_charset   = DBConnection::getDefaultCharset();
-    $default_collation = DBConnection::getDefaultCollation();
-    $default_key_sign  = DBConnection::getDefaultPrimaryKeySignOption();
+    try {
+        $migration = new Migration(PLUGIN_ETIQUETACHAMADOS_VERSION);
+        Toolbox::logInFile('etiquetachamados', "Migration criada OK\n");
 
-    // ---------------------------------------------------------------
-    // Table: glpi_plugin_etiquetachamados_configs
-    // Stores per-entity printer configuration + ZPL template
-    // ---------------------------------------------------------------
-    if (!$DB->tableExists('glpi_plugin_etiquetachamados_configs')) {
-        $query = "CREATE TABLE `glpi_plugin_etiquetachamados_configs` (
-            `id`            int {$default_key_sign} NOT NULL AUTO_INCREMENT,
-            `entities_id`   int {$default_key_sign} NOT NULL DEFAULT '0',
-            `is_recursive`  tinyint NOT NULL DEFAULT '1',
-            `printer_ip`    varchar(255) DEFAULT NULL,
-            `printer_port`  int NOT NULL DEFAULT '9100',
-            `zpl_template`  text DEFAULT NULL,
-            `is_active`     tinyint NOT NULL DEFAULT '1',
-            `date_creation` timestamp NULL DEFAULT NULL,
-            `date_mod`      timestamp NULL DEFAULT NULL,
-            PRIMARY KEY (`id`),
-            KEY `entities_id` (`entities_id`),
-            KEY `is_recursive` (`is_recursive`)
-        ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset}
-          COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
+        // -----------------------------------------------------------
+        // Safe defaults: DBConnection methods may NOT exist in all
+        // GLPI 10.0.x versions. Use fallbacks.
+        // -----------------------------------------------------------
+        $default_charset   = 'utf8mb4';
+        $default_collation = 'utf8mb4_unicode_ci';
+        $default_key_sign  = 'unsigned';
 
-        $DB->doQuery($query) or die("Erro ao criar tabela configs: " . $DB->error());
+        if (method_exists('DBConnection', 'getDefaultCharset')) {
+            $default_charset = DBConnection::getDefaultCharset();
+        }
+        if (method_exists('DBConnection', 'getDefaultCollation')) {
+            $default_collation = DBConnection::getDefaultCollation();
+        }
+        if (method_exists('DBConnection', 'getDefaultPrimaryKeySignOption')) {
+            $default_key_sign = DBConnection::getDefaultPrimaryKeySignOption();
+        }
 
         Toolbox::logInFile(
             'etiquetachamados',
-            "Tabela glpi_plugin_etiquetachamados_configs criada com sucesso.\n"
+            "DB defaults: charset={$default_charset}, collation={$default_collation}, key_sign={$default_key_sign}\n"
         );
-    }
 
-    // ---------------------------------------------------------------
-    // Table: glpi_plugin_etiquetachamados_printjobs
-    // Async print queue
-    // ---------------------------------------------------------------
-    if (!$DB->tableExists('glpi_plugin_etiquetachamados_printjobs')) {
-        $query = "CREATE TABLE `glpi_plugin_etiquetachamados_printjobs` (
-            `id`            int {$default_key_sign} NOT NULL AUTO_INCREMENT,
-            `tickets_id`    int {$default_key_sign} NOT NULL DEFAULT '0',
-            `entities_id`   int {$default_key_sign} NOT NULL DEFAULT '0',
-            `users_id`      int {$default_key_sign} NOT NULL DEFAULT '0',
-            `status`        int NOT NULL DEFAULT '0'
-                            COMMENT '0=pendente, 1=processando, 2=concluido, 3=erro',
-            `zpl_content`   text DEFAULT NULL,
-            `error_message` text DEFAULT NULL,
-            `date_creation` timestamp NULL DEFAULT NULL,
-            `date_mod`      timestamp NULL DEFAULT NULL,
-            PRIMARY KEY (`id`),
-            KEY `tickets_id` (`tickets_id`),
-            KEY `entities_id` (`entities_id`),
-            KEY `users_id` (`users_id`),
-            KEY `status` (`status`)
-        ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset}
-          COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
+        // -----------------------------------------------------------
+        // Table: glpi_plugin_etiquetachamados_configs
+        // -----------------------------------------------------------
+        if (!$DB->tableExists('glpi_plugin_etiquetachamados_configs')) {
+            Toolbox::logInFile('etiquetachamados', "Criando tabela configs...\n");
 
-        $DB->doQuery($query) or die("Erro ao criar tabela printjobs: " . $DB->error());
+            $query = "CREATE TABLE `glpi_plugin_etiquetachamados_configs` (
+                `id`            int {$default_key_sign} NOT NULL AUTO_INCREMENT,
+                `entities_id`   int {$default_key_sign} NOT NULL DEFAULT '0',
+                `is_recursive`  tinyint NOT NULL DEFAULT '1',
+                `printer_ip`    varchar(255) DEFAULT NULL,
+                `printer_port`  int NOT NULL DEFAULT '9100',
+                `zpl_template`  text DEFAULT NULL,
+                `is_active`     tinyint NOT NULL DEFAULT '1',
+                `date_creation` timestamp NULL DEFAULT NULL,
+                `date_mod`      timestamp NULL DEFAULT NULL,
+                PRIMARY KEY (`id`),
+                KEY `entities_id` (`entities_id`),
+                KEY `is_recursive` (`is_recursive`)
+            ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset}
+              COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
 
+            $result = $DB->doQuery($query);
+            if (!$result) {
+                $err = $DB->error();
+                Toolbox::logInFile('etiquetachamados', "ERRO criando tabela configs: {$err}\n");
+                return false;
+            }
+            Toolbox::logInFile('etiquetachamados', "Tabela configs criada OK\n");
+        } else {
+            Toolbox::logInFile('etiquetachamados', "Tabela configs já existe, pulando.\n");
+        }
+
+        // -----------------------------------------------------------
+        // Table: glpi_plugin_etiquetachamados_printjobs
+        // -----------------------------------------------------------
+        if (!$DB->tableExists('glpi_plugin_etiquetachamados_printjobs')) {
+            Toolbox::logInFile('etiquetachamados', "Criando tabela printjobs...\n");
+
+            $query = "CREATE TABLE `glpi_plugin_etiquetachamados_printjobs` (
+                `id`            int {$default_key_sign} NOT NULL AUTO_INCREMENT,
+                `tickets_id`    int {$default_key_sign} NOT NULL DEFAULT '0',
+                `entities_id`   int {$default_key_sign} NOT NULL DEFAULT '0',
+                `users_id`      int {$default_key_sign} NOT NULL DEFAULT '0',
+                `status`        int NOT NULL DEFAULT '0'
+                                COMMENT '0=pendente, 1=processando, 2=concluido, 3=erro',
+                `zpl_content`   text DEFAULT NULL,
+                `error_message` text DEFAULT NULL,
+                `date_creation` timestamp NULL DEFAULT NULL,
+                `date_mod`      timestamp NULL DEFAULT NULL,
+                PRIMARY KEY (`id`),
+                KEY `tickets_id` (`tickets_id`),
+                KEY `entities_id` (`entities_id`),
+                KEY `users_id` (`users_id`),
+                KEY `status` (`status`)
+            ) ENGINE=InnoDB DEFAULT CHARSET={$default_charset}
+              COLLATE={$default_collation} ROW_FORMAT=DYNAMIC;";
+
+            $result = $DB->doQuery($query);
+            if (!$result) {
+                $err = $DB->error();
+                Toolbox::logInFile('etiquetachamados', "ERRO criando tabela printjobs: {$err}\n");
+                return false;
+            }
+            Toolbox::logInFile('etiquetachamados', "Tabela printjobs criada OK\n");
+        } else {
+            Toolbox::logInFile('etiquetachamados', "Tabela printjobs já existe, pulando.\n");
+        }
+
+        // -----------------------------------------------------------
+        // Rights
+        // -----------------------------------------------------------
+        Toolbox::logInFile('etiquetachamados', "Registrando direitos...\n");
+
+        ProfileRight::addProfileRights([
+            'plugin_etiquetachamados_print',
+            'plugin_etiquetachamados_config'
+        ]);
+
+        // Grant full access to super-admin profiles
+        // ALLSTANDARDRIGHT = 31 (CREATE|READ|UPDATE|DELETE|PURGE)
+        $rightsValue = defined('ALLSTANDARDRIGHT') ? ALLSTANDARDRIGHT : 31;
+        $migration->addRight(
+            'plugin_etiquetachamados_config',
+            $rightsValue,
+            ['config' => UPDATE]
+        );
+
+        Toolbox::logInFile('etiquetachamados', "Direitos registrados OK\n");
+
+        // -----------------------------------------------------------
+        // CronTask
+        // -----------------------------------------------------------
+        Toolbox::logInFile('etiquetachamados', "Registrando CronTask...\n");
+
+        CronTask::register(
+            'PluginEtiquetachamadosPrintjob',
+            'EtiquetaPrint',
+            60,
+            [
+                'param'   => 10,
+                'mode'    => CronTask::MODE_EXTERNAL,
+                'comment' => 'Processa a fila de impressao de etiquetas',
+            ]
+        );
+
+        Toolbox::logInFile('etiquetachamados', "CronTask registrada OK\n");
+
+        $migration->executeMigration();
+
+        Toolbox::logInFile('etiquetachamados', "=== INSTALAÇÃO CONCLUÍDA COM SUCESSO ===\n");
+        return true;
+
+    } catch (\Throwable $e) {
+        // Catch ANY error (including fatal-like TypeError, Error, etc.)
         Toolbox::logInFile(
             'etiquetachamados',
-            "Tabela glpi_plugin_etiquetachamados_printjobs criada com sucesso.\n"
+            "=== ERRO FATAL NA INSTALAÇÃO ===\n"
+            . "Mensagem: " . $e->getMessage() . "\n"
+            . "Arquivo:  " . $e->getFile() . ":" . $e->getLine() . "\n"
+            . "Trace:\n" . $e->getTraceAsString() . "\n"
         );
+        return false;
     }
-
-    // ---------------------------------------------------------------
-    // Rights: register the plugin right
-    // ---------------------------------------------------------------
-    // Rights: register the plugin right
-    ProfileRight::addProfileRights([
-        'plugin_etiquetachamados_print',
-        'plugin_etiquetachamados_config'
-    ]);
-
-    // Grant full access to super-admin profiles (those that can update Config)
-    // Use ALLSTANDARDRIGHT (CREATE|READ|UPDATE|DELETE|PURGE) — available in all GLPI 10.0.x
-    $migration->addRight(
-        'plugin_etiquetachamados_config',
-        ALLSTANDARDRIGHT,
-        [Config::$rightname => UPDATE]
-    );
-
-    // ---------------------------------------------------------------
-    // CronTask: register the async print job processor
-    // ---------------------------------------------------------------
-    // Use string class name to avoid autoloading issues during install
-    CronTask::register(
-        'PluginEtiquetachamadosPrintjob',
-        'EtiquetaPrint',
-        60, // Run every 60 seconds
-        [
-            'param'   => 10,     // Process up to 10 jobs per run
-            'mode'    => CronTask::MODE_EXTERNAL,
-            'comment' => 'Processa a fila de impressão de etiquetas',
-        ]
-    );
-
-    $migration->executeMigration();
-
-    return true;
 }
 
 
